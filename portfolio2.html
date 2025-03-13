@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- AOS Animasyon -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Root değişkenleri */
+        :root {
+            --primary: #2ecc71;
+            --dark: #1a1a1a;
+            --light: #ffffff;
+            --gray: #6c757d;
+            --gradient: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+
+        /* Genel stiller */
+        body {
+            background: var(--dark);
+            color: var(--light);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        /* Navbar stilleri */
+        .navbar {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Light tema için navbar */
+        [data-theme="light"] .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link i {
+            margin-right: 0.5rem;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover i {
+            transform: translateY(-2px);
+            color: var(--primary);
+        }
+
+        .nav-text {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover .nav-text {
+            transform: translateY(-2px);
+            color: var(--primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Dil ve Tema Butonları */
+        .nav-utilities button {
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .nav-utilities button {
+            color: var(--dark);
+        }
+
+        .nav-utilities button:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+
+        /* Aktif menü item'ı */
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active i {
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(46, 204, 113, 0.1) 0%, transparent 70%);
+            z-index: 0;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.2);
+        }
+
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 3rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 50px;
+            height: 3px;
+            background: var(--gradient);
+            transform: translateX(-50%);
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            padding: 1rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary);
+            box-shadow: none;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .info-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Carousel Stilleri */
+        .tech-carousel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            perspective: 1200px;
+        }
+
+        .carousel-3d {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            transform-style: preserve-3d;
+            animation: rotate 30s linear infinite;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            background: rgba(46, 204, 113, 0.1);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            color: #fff;
+            transition: all 0.3s;
+            transform-origin: center;
+            transform: rotateY(calc(var(--i) * 20deg)) translateZ(450px);
+            backface-visibility: hidden;
+        }
+
+        /* İkon boyutları için standart ölçüler */
+.carousel-item i,
+.carousel-item img {
+    width: 3rem !important;
+    height: 3rem !important;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: contain; /* SVG'ler için */
+}
+
+/* Font Awesome ikonları için özel stil */
+.carousel-item i.fab,
+.carousel-item i.fas {
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Özel boyutlandırma gerektiren ikonlar için düzeltmeler */
+.carousel-item i.fa-python,
+.carousel-item i.fa-git-alt,
+.carousel-item i.fa-linux {
+    font-size: 3rem;
+}
+
+/* PostgreSQL ve MSSQL ikonları için özel düzeltme */
+.carousel-item img[alt="postgresql"],
+.carousel-item img[alt="mssql"] {
+    width: 3.5rem !important;
+    height: 3.5rem !important;
+}
+
+/* Hover durumunda boyut değişimi */
+.carousel-item:hover i,
+.carousel-item:hover img {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 5px var(--primary));
+}
+
+        .carousel-item:hover {
+            background: rgba(46, 204, 113, 0.2);
+            box-shadow: 0 0 15px rgba(46, 204, 113, 0.3);
+            transform: rotateY(calc(var(--i) * 20deg)) translateZ(470px);
+        }
+
+        .carousel-item:hover i,
+        .carousel-item:hover img {
+            transform: scale(1.2);
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        @keyframes rotate {
+            from { transform: rotateY(0); }
+            to { transform: rotateY(360deg); }
+        }
+
+        .carousel-3d:hover {
+            animation-play-state: paused;
+        }
+
+        /* İkonlar için özel renkler */
+        .carousel-item i.fa-html5 { color: #e34f26; }
+        .carousel-item i.fa-css3-alt { color: #264de4; }
+        .carousel-item i.fa-js { color: #f7df1e; }
+        .carousel-item i.fa-python { 
+            background: linear-gradient(45deg, #4B8BBE 50%, #FFD43B 50%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .carousel-item i.fa-git-alt { color: #F05032; }
+        .carousel-item i.fa-linux { color: #FCC624; }
+
+        /* SVG ikonlar için özel renkler ve filtreler */
+        .carousel-item img[alt="django"] { filter: invert(48%) sepia(90%) saturate(385%) hue-rotate(71deg); }
+        .carousel-item img[alt="postgresql"] { 
+            filter: invert(24%) sepia(29%) saturate(1032%) hue-rotate(165deg) brightness(97%) contrast(88%);
+        }
+        .carousel-item img[alt="mssql"] { filter: invert(31%) sepia(66%) saturate(2578%) hue-rotate(337deg); }
+        .carousel-item img[alt="c"] { filter: invert(40%) sepia(98%) saturate(2209%) hue-rotate(184deg); }
+        .carousel-item img[alt="cplusplus"] { filter: invert(23%) sepia(75%) saturate(1984%) hue-rotate(240deg); }
+        .carousel-item img[alt="csharp"] { filter: invert(35%) sepia(91%) saturate(1566%) hue-rotate(235deg); }
+        .carousel-item img[alt="java"] { filter: invert(50%) sepia(95%) saturate(7466%) hue-rotate(0deg); }
+        .carousel-item img[alt="redis"] { 
+            filter: invert(27%) sepia(87%) saturate(2841%) hue-rotate(346deg) brightness(89%) contrast(97%);
+        }
+        .carousel-item img[alt="nginx"] { filter: invert(42%) sepia(98%) saturate(1031%) hue-rotate(87deg); }
+        .carousel-item img[alt="mariadb"] { filter: invert(35%) sepia(81%) saturate(3236%) hue-rotate(328deg); }
+
+        /* Hover efektleri - orijinal renkten yeşile geçiş */
+        .carousel-item:hover i {
+            color: var(--primary) !important;
+            transition: color 0.3s ease;
+        }
+
+        .carousel-item:hover i.fa-python {
+            background: var(--primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .carousel-item:hover img {
+            filter: invert(72%) sepia(40%) saturate(581%) hue-rotate(93deg) brightness(92%) contrast(89%) !important;
+            transition: filter 0.3s ease;
+        }
+
+        /* İkon boyutları ve hizalama düzeltmeleri */
+        .carousel-item i,
+        .carousel-item img {
+            width: 3rem !important;
+            height: 3rem !important;
+            margin-bottom: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-item span {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        /* Hover durumunda metin efekti */
+        .carousel-item:hover span {
+            color: var(--primary);
+            opacity: 1;
+        }
+
+        /* Navbar stilleri güncelleme */
+        .navbar {
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .navbar {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+        }
+
+        /* Menü linkleri için temel stiller */
+        .nav-link {
+            color: var(--light) !important;
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .nav-link {
+            color: var(--dark) !important;
+        }
+
+        /* Navbar toggle butonu */
+        .navbar-toggler {
+            color: var(--light);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="light"] .navbar-toggler {
+            color: var(--dark);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Hover ve aktif durumlar */
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary) !important;
+        }
+
+        .nav-link:hover i,
+        .nav-link.active i {
+            color: var(--primary);
+        }
+
+        /* Tema ve dil butonları */
+        .nav-utilities button {
+            color: var(--light) !important;
+            transition: all 0.3s ease;
+        }
+
+        [data-theme="light"] .nav-utilities button {
+            color: var(--dark) !important;
+        }
+
+        .nav-utilities button:hover {
+            color: var(--primary) !important;
+            transform: scale(1.1);
+        }
+
+        /* Mobil menü arka planı */
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: rgba(26, 26, 26, 0.98);
+                padding: 1rem;
+                border-radius: 10px;
+                margin-top: 1rem;
+            }
+
+            [data-theme="light"] .navbar-collapse {
+                background: rgba(255, 255, 255, 0.98);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Portfolio</a>
+            
+            <div class="nav-utilities order-lg-last d-flex align-items-center">
+                <!-- Dil Seçici -->
+                <div class="language-switch mx-3">
+                    <button class="btn btn-link p-0" id="languageToggle">
+                        <i class="fas fa-globe"></i>
+                        <span class="ms-1 d-none d-sm-inline" id="currentLang">TR</span>
+                    </button>
+                </div>
+                
+                <!-- Tema Seçici -->
+                <div class="theme-switch">
+                    <button class="btn btn-link p-0" id="themeToggle">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                </div>
+
+                <!-- Mobil Menü Butonu -->
+                <button class="navbar-toggler ms-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Ana Menü -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#home">
+                            <i class="fas fa-home"></i>
+                            <span class="nav-text" data-tr="home">Ana Sayfa</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">
+                            <i class="fas fa-user"></i>
+                            <span class="nav-text" data-tr="about">Hakkımda</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#skills">
+                            <i class="fas fa-code"></i>
+                            <span class="nav-text" data-tr="skills">Teknolojiler</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#projects">
+                            <i class="fas fa-project-diagram"></i>
+                            <span class="nav-text" data-tr="projects">Projeler</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">
+                            <i class="fas fa-envelope"></i>
+                            <span class="nav-text" data-tr="contact">İletişim</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6" data-aos="fade-right">
+                    <h1><span data-tr="hello">Merhaba, Ben</span> <span class="highlight">İsminiz</span></h1>
+                    <h2 data-tr="role">Full Stack Developer</h2>
+                    <p data-tr="description">Modern web teknolojileri ile kullanıcı dostu uygulamalar geliştiriyorum.</p>
+                    <a href="#contact" class="btn btn-primary" data-tr="contactMe">İletişime Geç</a>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <img src="hero-image.png" alt="Hero Image" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up" data-tr="aboutTitle">Hakkımda</h2>
+            <div class="row">
+                <div class="col-md-6" data-aos="fade-right">
+                    <img src="about-image.png" alt="About Image" class="img-fluid">
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <p data-tr="aboutText">Yazılım dünyasına olan tutkum ve sürekli öğrenme isteğim ile modern web teknolojilerini kullanarak yaratıcı çözümler üretiyorum.</p>
+                    <div class="stats">
+                        <div class="stat-item">
+                            <h3>3+</h3>
+                            <p data-tr="yearsExp">Yıl Deneyim</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>50+</h3>
+                            <p data-tr="completedProjects">Proje Tamamlandı</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>30+</h3>
+                            <p data-tr="happyClients">Mutlu Müşteri</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="skills py-5">
+        <div class="container">
+            <h2 class="section-title text-center mb-5" data-aos="fade-up">Teknolojiler</h2>
+            <div class="tech-carousel">
+                <div class="carousel-3d">
+                    <div class="carousel-item" style="--i:1"><i class="fab fa-html5"></i><span>HTML5</span></div>
+                    <div class="carousel-item" style="--i:2"><i class="fab fa-css3-alt"></i><span>CSS3</span></div>
+                    <div class="carousel-item" style="--i:3"><i class="fab fa-js"></i><span>JavaScript</span></div>
+                    <div class="carousel-item" style="--i:4">
+                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/c/c-original.svg" alt="c" style="width: 3rem; margin-bottom: 10px;"/> 
+                        C
+                    </div>
+                    <div class="carousel-item" style="--i:5">
+                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/cplusplus/cplusplus-original.svg" alt="cplusplus" style="width: 3rem; margin-bottom: 10px;"/>
+                        C++
+                    </div>
+                    <div class="carousel-item" style="--i:6">
+                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/csharp/csharp-original.svg" alt="csharp" style="width: 3rem; margin-bottom: 10px;"/>
+                        C#
+                    </div>
+                    <div class="carousel-item" style="--i:7">
+                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/java/java-original.svg" alt="java" style="width: 3rem; margin-bottom: 10px;"/>
+                        Java
+                    </div>
+                    <div class="carousel-item" style="--i:8">
+                        <img src="https://www.vectorlogo.zone/logos/gnu_bash/gnu_bash-icon.svg" alt="shell" style="width: 3rem; margin-bottom: 10px;"/>
+                        bash
+                    </div>
+                    <div class="carousel-item" style="--i:9"><i class="fab fa-linux"></i> Linux</div>
+                    <div class="carousel-item" style="--i:10">
+                        <img src="https://www.vectorlogo.zone/logos/postgresql/postgresql-icon.svg" alt="postgresql" style="width: 3rem; margin-bottom: 10px;"/>
+                        PostgreSQL
+                    </div>
+                    <div class="carousel-item" style="--i:11">
+                        <img src="https://www.svgrepo.com/show/303229/microsoft-sql-server-logo.svg" alt="mssql" style="width: 3rem; margin-bottom: 10px;"/>
+                        MSSQL
+                    </div>
+                    <div class="carousel-item" style="--i:12"><i class="fab fa-git-alt"></i> Git</div>
+                    <div class="carousel-item" style="--i:13">
+                        <i class="fab fa-python"></i>
+                        <span>Python</span>
+                    </div>
+                    <div class="carousel-item" style="--i:14">
+                        <img src="https://cdn.worldvectorlogo.com/logos/django.svg" alt="django" style="width: 3rem; margin-bottom: 10px;"/>
+                        Django
+                    </div>
+                    <div class="carousel-item" style="--i:15">
+                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/spring/spring-original-wordmark.svg" alt="spring" style="width: 3rem; margin-bottom: 10px;"/>
+                        Spring
+                    </div>
+                    <div class="carousel-item" style="--i:16">
+                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/redis/redis-original-wordmark.svg" alt="redis" style="width: 3rem; margin-bottom: 10px;"/>
+                        Redis
+                    </div>
+                    <div class="carousel-item" style="--i:17">
+                        <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nginx/nginx-original.svg" alt="nginx" style="width: 3rem; margin-bottom: 10px;"/>
+                        Nginx
+                    </div>
+                    <div class="carousel-item" style="--i:18">
+                        <img src="https://www.vectorlogo.zone/logos/mariadb/mariadb-icon.svg" alt="mariadb" style="width: 3rem; margin-bottom: 10px;"/>
+                        MariaDB
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Projeler</h2>
+            <div class="row">
+                <!-- Proje kartları -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up" data-tr="contactTitle">İletişim</h2>
+            <div class="row">
+                <div class="col-md-6" data-aos="fade-right">
+                    <form id="contact-form">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" data-tr-placeholder="name" placeholder="Adınız">
+                        </div>
+                        <div class="mb-3">
+                            <input type="email" class="form-control" data-tr-placeholder="email" placeholder="E-posta">
+                        </div>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="5" data-tr-placeholder="message" placeholder="Mesajınız"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" data-tr="send">Gönder</button>
+                    </form>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <p>email@example.com</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <p>+90 555 123 4567</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <p>İstanbul, Türkiye</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="portfolio.js"></script>
+</body>
+</html>
